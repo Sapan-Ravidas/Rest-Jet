@@ -6,26 +6,28 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sapan.restapp.services.NetWorkService
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.ResponseBody
+import retrofit2.Response
 import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
 class RequestViewModel @Inject constructor(): ViewModel() {
 
-    private val _requestUrl = MutableLiveData<String>().apply {
-        value = "https://192.168.1.7:8080/public/api/create-user"
-    }
-    val requestUrl: LiveData<String> = _requestUrl
+    private val _requestUrl = MutableStateFlow<String>("https://192.168.1.7:8080/public/api/create-user")
 
-    private val _selectedMethod = MutableLiveData<String>().apply {
-        value = "POST"
-    }
-    val selectedMethod: LiveData<String> = _selectedMethod
+    val requestUrl: StateFlow<String> = _requestUrl.asStateFlow()
+
+    private val _selectedMethod = MutableStateFlow("POST")
+    val selectedMethod: StateFlow<String> = _selectedMethod.asStateFlow()
 
     private val _headers = MutableLiveData<Map<String, String>>(emptyMap())
     val headers: LiveData<Map<String, String>> = _headers
@@ -33,11 +35,11 @@ class RequestViewModel @Inject constructor(): ViewModel() {
     private val _queryParams = MutableLiveData<Map<String, String>>(emptyMap())
     val queryParams: LiveData<Map<String, String>> = _queryParams
 
-    private val _isLoading = MutableLiveData<Boolean>(false)
-    val isLoading: LiveData<Boolean> = _isLoading
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
-    private val _error = MutableLiveData<String?>(null)
-    val error: LiveData<String?> = _error
+    private val _error = MutableStateFlow<String?>(null)
+    val error: StateFlow<String?> = _error.asStateFlow()
 
     fun updateUrl(url: String) {
         _requestUrl.value = url
@@ -87,6 +89,19 @@ class RequestViewModel @Inject constructor(): ViewModel() {
             try {
                 val startTime = System.currentTimeMillis()
                 val networkService = NetWorkService(url)
+                val fullUrl = buildUrlWithQueryParams(url, queryParams)
+
+                val response: Response<ResponseBody> = when(method.uppercase()) {
+                    "GET" -> networkService.apiService.get(fullUrl, headers)
+                    "POST" -> handlePostRequest(networkService, fullUrl, headers, bodyType, bodyContent, file)
+                    "PUT" -> handlePutRequest(networkService, fullUrl, headers, bodyType, bodyContent, file)
+                    "DELETE" -> networkService.apiService.delete(fullUrl, headers)
+                    "PATCH" -> handlePatchRequest(networkService, fullUrl, headers, bodyType, bodyContent, file)
+                    else -> throw IllegalArgumentException("unsupported http method")
+                }
+
+                val responseTime = System.currentTimeMillis() - startTime
+                val responseBody = response.body()?.string()
 
             } catch (e: Exception) {
                 _error.value = e.message ?: "unknown error occured"
@@ -158,13 +173,23 @@ class RequestViewModel @Inject constructor(): ViewModel() {
         file: File?
     ) = when (bodyType) {
         "TEXT" -> {
-
+            val requestBody = bodyContent.toRequestBody("application/json".toMediaTypeOrNull())
+            netWorkService.apiService.put(url, headers, requestBody)
         }
         "FILE" -> {
-
+            val part = MultipartBody.Part.createFormData(
+                "file",
+                file?.name,
+                file?.asRequestBody("multipart/form-data".toMediaTypeOrNull())!!
+            )
+            netWorkService.apiService.uploadFile(url, headers, part)
         }
         "FORM" -> {
-
+            val fields = bodyContent.split("&").associate {
+                val parts = it.split("=")
+                parts[0] to parts.getOrElse(1) { "" }
+            }
+            netWorkService.apiService.postForm(url, headers, fields)
         }
         else -> throw IllegalArgumentException("UnSupported body type")
     }
@@ -181,13 +206,23 @@ class RequestViewModel @Inject constructor(): ViewModel() {
         file: File?
     ) = when (bodyType) {
         "TEXT" -> {
-
+            val requestBody = bodyContent.toRequestBody("application/json".toMediaTypeOrNull())
+            netWorkService.apiService.patch(url, headers, requestBody)
         }
         "FILE" -> {
-
+            val part = MultipartBody.Part.createFormData(
+                "file",
+                file?.name,
+                file?.asRequestBody("multipart/form-data".toMediaTypeOrNull())!!
+            )
+            netWorkService.apiService.uploadFile(url, headers, part)
         }
         "FORM" -> {
-
+            val fields = bodyContent.split("&").associate {
+                val parts = it.split("=")
+                parts[0] to parts.getOrElse(1) { "" }
+            }
+            netWorkService.apiService.postForm(url, headers, fields)
         }
         else -> throw IllegalArgumentException("Unsupported body type")
     }

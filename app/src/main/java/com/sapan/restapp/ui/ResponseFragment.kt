@@ -28,12 +28,30 @@ class ResponseFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupObservers()
+    }
+
+    private fun setupObservers() {
         viewModel.responseCode.observe(viewLifecycleOwner) { code ->
-            binding.tvResponseCode.text = code.toString()
+            binding.tvResponseCode.text = code?.toString() ?: "--"
         }
 
         viewModel.responseTime.observe(viewLifecycleOwner) { time ->
-            binding.tvResponseTime.text = "${time} ms"
+            binding.tvResponseTime.text = if (time != null) "${time} ms" else "--"
+        }
+
+        viewModel.responseBody.observe(viewLifecycleOwner) { body ->
+            // TODO: display in response body
+        }
+
+        viewModel.error.observe(viewLifecycleOwner) { error ->
+            error?.let {
+                // TODO: display error message
+            }
+        }
+
+        viewModel.responseHeader.observe(viewLifecycleOwner) { headers ->
+            // TODO: display headers in recycler view or textview
         }
     }
 
