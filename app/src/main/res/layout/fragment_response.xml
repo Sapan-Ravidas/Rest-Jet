@@ -1,129 +1,184 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp" >
+    android:fillViewport="true">
 
-    <TextView
-        android:id="@+id/tvStatsLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="status"
-        android:textStyle="bold"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <LinearLayout
-        android:id="@+id/llStatus"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@drawable/border_outline"
-        android:padding="12dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvStatsLabel" >
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="4dp" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="response code"
-                android:textColor="@android:color/black" />
-
-            <TextView
-                android:id="@+id/tvResponseCode"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="201"
-                android:gravity="end"
-                android:textStyle="bold"
-                android:textColor="@android:color/black" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="response time"
-                android:textColor="@android:color/black" />
-
-            <TextView
-                android:id="@+id/tvResponseTime"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="910ms"
-                android:gravity="end"
-                android:textStyle="bold"
-                android:textColor="@android:color/black" />
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/tvHeadersLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="headers"
-        android:textStyle="bold"
-        android:layout_marginTop="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/llStatus" />
-
-
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="4dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvHeadersLabel" >
+        android:padding="16dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="response code"
-            android:textColor="@android:color/black" />
-
+        <!-- Status Section -->
         <LinearLayout
+            android:id="@+id/llStatusHeader"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="end" >
+            android:padding="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Status"
+                android:textStyle="bold" />
 
             <ImageView
+                android:id="@+id/ivStatusDropdown"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:background="@drawable/ic_copy" />
-
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="@drawable/ic_drop_down" />
-
+                android:src="@drawable/ic_drop_down"
+                android:contentDescription="Toggle status visibility" />
         </LinearLayout>
 
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/llStatusContent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/border_outline"
+            android:padding="12dp"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/llStatusHeader">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="4dp">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Response Code:"
+                    android:textColor="@android:color/black" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/tvResponseCode"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="--"
+                    android:gravity="end"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/black" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Response Time:"
+                    android:textColor="@android:color/black" />
+
+                <TextView
+                    android:id="@+id/tvResponseTime"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="--"
+                    android:gravity="end"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/black" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Headers Section -->
+        <LinearLayout
+            android:id="@+id/llHeadersHeader"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/llStatusContent">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Headers"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/ivHeadersDropdown"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_drop_down"
+                android:contentDescription="Toggle headers visibility" />
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvHeaders"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border_outline"
+            android:padding="8dp"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/llHeadersHeader"
+            tools:listitem="@layout/item_header" />
+
+        <!-- Response Body Section -->
+        <LinearLayout
+            android:id="@+id/llBodyHeader"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rvHeaders">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Response Body"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/ivBodyDropdown"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_drop_down"
+                android:contentDescription="Toggle body visibility" />
+        </LinearLayout>
+
+        <ScrollView
+            android:id="@+id/svBodyContent"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:background="@drawable/border_outline"
+            android:padding="8dp"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/llBodyHeader">
+
+            <TextView
+                android:id="@+id/tvResponseBody"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No response body"
+                android:textColor="@android:color/black" />
+        </ScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

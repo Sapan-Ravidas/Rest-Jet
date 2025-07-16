@@ -6,7 +6,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-class NetWorkService(private val baseUrl: String) {
+class NetWorkService() {
     private val client = OkHttpClient.Builder()
         .connectTimeout(30, TimeUnit.SECONDS)
         .readTimeout(30, TimeUnit.SECONDS)
@@ -17,7 +17,7 @@ class NetWorkService(private val baseUrl: String) {
         .build()
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl(baseUrl)
+        .baseUrl("https://localhost:8080") // temp base url
         .client(client)
         .addConverterFactory(GsonConverterFactory.create())
         .build()

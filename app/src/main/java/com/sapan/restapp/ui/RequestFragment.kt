@@ -140,12 +140,15 @@ class RequestFragment: Fragment() {
         }
 
         val method = binding.spinnerMethod.selectedItem.toString()
-        val bodyType = when (binding.radioGroupBody.checkedRadioButtonId) {
-            R.id.radioText -> "Text"
-            R.id.radioFile -> "File"
-            R.id.radioForm -> "Form"
-            else -> ""
+
+        val bodyType = if (method.equals("GET", ignoreCase = true)) "NONE"
+        else when (binding.radioGroupBody.checkedRadioButtonId) {
+            R.id.radioText -> "TEXT"
+            R.id.radioFile -> "FILE"
+            R.id.radioForm -> "FORM"
+            else -> "NONE"
         }
+
         val bodyContent = binding.etJsonBody.text.toString()
 
         requestViewModel.makeRequest(

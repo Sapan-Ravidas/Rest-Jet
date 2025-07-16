@@ -145,6 +145,15 @@
                 android:buttonTint="@color/chip_selected_bg"
                 android:layout_weight="1" />
 
+            <RadioButton
+                android:id="@+id/radioNone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="none"
+                android:checked="true"
+                android:buttonTint="@color/chip_selected_bg"
+                android:layout_weight="1" />
+
         </RadioGroup>
 
         <EditText

@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import com.sapan.restapp.databinding.FragmentResponseBinding
 import com.sapan.restapp.viewmodel.ResponseViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import org.json.JSONObject
 
 @AndroidEntryPoint
 class ResponseFragment: Fragment() {
@@ -41,7 +42,13 @@ class ResponseFragment: Fragment() {
         }
 
         viewModel.responseBody.observe(viewLifecycleOwner) { body ->
-            // TODO: display in response body
+            body?.let {
+                try {
+                    val json = JSONObject(it)
+                } catch (e: Exception) {
+
+                }
+            }
         }
 
         viewModel.error.observe(viewLifecycleOwner) { error ->

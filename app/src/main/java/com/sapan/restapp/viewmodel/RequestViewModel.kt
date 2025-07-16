@@ -88,7 +88,7 @@ class RequestViewModel @Inject constructor(): ViewModel() {
         viewModelScope.launch {
             try {
                 val startTime = System.currentTimeMillis()
-                val networkService = NetWorkService(url)
+                val networkService = NetWorkService()
                 val fullUrl = buildUrlWithQueryParams(url, queryParams)
 
                 val response: Response<ResponseBody> = when(method.uppercase()) {
@@ -157,7 +157,7 @@ class RequestViewModel @Inject constructor(): ViewModel() {
         "FORM" -> {
             val fields = bodyContent.split("&").associate {
                 val parts = it.split("=")
-                parts[0] to parts.getOrElse(1) {""}
+                parts[0] to parts.getOrElse(1) { "" }
             }
             netWorkService.apiService.postForm(url, headers, fields)
         }
