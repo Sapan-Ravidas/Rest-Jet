@@ -1,36 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="md_theme_light_primary">#006A60</color>
+    <!-- Primary colors - bold teal for strong visual impact -->
+    <color name="md_theme_light_primary">#01160F</color>
     <color name="md_theme_light_onPrimary">#FFFFFF</color>
-    <color name="md_theme_light_primaryContainer">#72F7E4</color>
-    <color name="md_theme_light_onPrimaryContainer">#00201C</color>
-    <color name="md_theme_light_secondary">#4A635F</color>
-    <color name="md_theme_light_onSecondary">#FFFFFF</color>
-    <color name="md_theme_light_secondaryContainer">#CDE8E3</color>
-    <color name="md_theme_light_onSecondaryContainer">#06201C</color>
-    <color name="md_theme_light_tertiary">#47627A</color>
-    <color name="md_theme_light_onTertiary">#FFFFFF</color>
-    <color name="md_theme_light_tertiaryContainer">#CEE6FF</color>
-    <color name="md_theme_light_onTertiaryContainer">#001E32</color>
-    <color name="md_theme_light_error">#BA1A1A</color>
-    <color name="md_theme_light_onError">#FFFFFF</color>
-    <color name="md_theme_light_errorContainer">#FFDAD6</color>
-    <color name="md_theme_light_onErrorContainer">#410002</color>
-    <color name="md_theme_light_background">#FAFDFA</color>
-    <color name="md_theme_light_onBackground">#191C1B</color>
-    <color name="md_theme_light_surface">#FAFDFA</color>
-    <color name="md_theme_light_onSurface">#191C1B</color>
-    <color name="md_theme_light_surfaceVariant">#DBE5E2</color>
-    <color name="md_theme_light_onSurfaceVariant">#3F4947</color>
-    <color name="md_theme_light_outline">#6F7977</color>
-    <color name="md_theme_light_inverseOnSurface">#EF9F9E</color>
-    <color name="md_theme_light_inverseSurface">#2D3130</color>
-    <color name="md_theme_light_inversePrimary">#50DBCA</color>
-    <color name="white_50_percent_alpha">#80FFFFFF</color>
+    <color name="md_theme_light_primaryContainer">#E0F7F7</color>
+    <color name="md_theme_light_onPrimaryContainer">#002E2E</color>
 
-    <color name="chip_selected_bg">#4CAF50</color> <color name="chip_unselected_bg">#F0F0F0</color>
+    <!-- Secondary colors - complementary coral for contrast -->
+    <color name="md_theme_light_secondary">#FF6B4D</color>
+    <color name="md_theme_light_onSecondary">#FFFFFF</color>
+    <color name="md_theme_light_secondaryContainer">#FFE0D9</color>
+    <color name="md_theme_light_onSecondaryContainer">#4C1400</color>
+
+    <!-- Tertiary colors - deep purple for accent -->
+    <color name="md_theme_light_tertiary">#000080</color>
+    <color name="md_theme_light_onTertiary">#FFFFFF</color>
+    <color name="md_theme_light_tertiaryContainer">#E8E5FF</color>
+    <color name="md_theme_light_onTertiaryContainer">#1F0061</color>
+
+    <!-- Error colors (maintained high contrast) -->
+    <color name="md_theme_light_error">#D32F2F</color>
+    <color name="md_theme_light_onError">#FFFFFF</color>
+    <color name="md_theme_light_errorContainer">#FFCDD2</color>
+    <color name="md_theme_light_onErrorContainer">#5F0000</color>
+
+    <!-- Background/surface colors - clean whites with subtle tint -->
+    <color name="md_theme_light_background">#85E27C7C</color>
+    <color name="md_theme_light_onBackground">#212121</color>
+    <color name="md_theme_light_surface">#FFFFFF</color>
+    <color name="md_theme_light_onSurface">#212121</color>
+    <color name="md_theme">#CECCCC</color>
+    <color name="md_theme_light_onSurfaceVariant">#424242</color>
+
+    <!-- Outline and inverse colors -->
+    <color name="md_theme_light_outline">#757575</color>
+    <color name="md_theme_light_inverseOnSurface">#BC5151</color>
+    <color name="md_theme_light_inverseSurface">#212121</color>
+    <color name="md_theme_light_inversePrimary">#80CBC4</color>
+
+    <!-- Chip colors - updated for better contrast -->
+    <color name="chip_selected_bg">#454545</color>
+    <color name="chip_unselected_bg">#EEEEEE</color>
     <color name="chip_selected_text">#FFFFFF</color>
-    <color name="chip_unselected_text">#333333</color>
-    <color name="chip_selected_stroke">#4CAF50</color>
-    <color name="chip_unselected_stroke">#CCCCCC</color>
+    <color name="chip_unselected_text">#8A4545</color>
+    <color name="chip_selected_stroke">#012F2F</color>
+    <color name="chip_unselected_stroke">#BDBDBD</color>
+
+    <!-- Additional utility colors -->
+    <color name="white_50_percent_alpha">#80FFFFFF</color>
+    <color name="button_shadow">#40594F4F</color>
+    <color name="button_highlight">#1A008080</color>
+    <color name="button_shadow1">#F5181717</color>
+    <color name="tab_colour">#29215D</color>
+    <color name="button_text">#AAFFFFFF</color>
+    <color name="uri_text">#F8B09F</color>
+
+
 </resources>
