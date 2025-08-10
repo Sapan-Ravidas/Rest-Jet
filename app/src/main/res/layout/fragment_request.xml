@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -15,9 +14,9 @@
             android:id="@+id/tvRequestUrlLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="request url"
-            android:textStyle="bold"
             android:layout_marginTop="8dp"
+            android:text="Request url"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -27,7 +26,7 @@
             android:layout_height="wrap_content"
             android:hint="https://192.168.1.7:8080/"
             android:inputType="textUri"
-            android:minHeight="48dp"
+            android:textColor="@color/uri_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvRequestUrlLabel" />
@@ -36,30 +35,33 @@
             android:id="@+id/llUrlOptions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginTop="8dp"
+            android:orientation="horizontal"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/etRequestUri" >
+            app:layout_constraintTop_toBottomOf="@id/etRequestUri">
 
             <Button
                 android:id="@+id/btnPath"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/transparent"
+                android:layout_marginTop="16dp"
                 android:text="path"
-                android:textAllCaps="false"
-                android:textColor="@android:color/black"
-                app:strokeColor="@android:color/darker_gray"
-                android:backgroundTint="@android:color/transparent" />
 
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+
+                app:strokeColor="@android:color/darker_gray" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/tvMethodLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="method"
-            android:textStyle="bold"
             android:layout_marginTop="16dp"
+            android:text="Method"
+            android:textColor="@color/button_text"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/llUrlOptions" />
 
@@ -67,21 +69,21 @@
             android:id="@+id/spinnerMethod"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@android:color/darker_gray"
             android:entries="@array/http_methods"
-            android:minHeight="48dp"
             android:spinnerMode="dropdown"
+            app:layout_constraintBottom_toBottomOf="@id/tvMethodLabel"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tvMethodLabel"
-            app:layout_constraintBottom_toBottomOf="@id/tvMethodLabel" />
+            app:layout_constraintTop_toTopOf="@id/tvMethodLabel" />
 
         <Button
             android:id="@+id/btnAddHeaders"
             style="@style/Widget.MaterialComponents.Button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="add headers"
-            android:backgroundTint="@color/chip_selected_bg"
             android:layout_marginTop="16dp"
+            android:backgroundTint="@color/chip_selected_bg"
+            android:text="add headers"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/spinnerMethod" />
@@ -91,9 +93,9 @@
             style="@style/Widget.MaterialComponents.Button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="add query params"
-            android:backgroundTint="@color/chip_selected_bg"
             android:layout_marginTop="8dp"
+            android:backgroundTint="@color/chip_selected_bg"
+            android:text="add query params"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btnAddHeaders" />
@@ -102,9 +104,10 @@
             android:id="@+id/tvBodyLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="body"
-            android:textStyle="bold"
             android:layout_marginTop="16dp"
+            android:text="Body"
+            android:textColor="@color/button_text"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btnAddQueryParams" />
 
@@ -112,38 +115,39 @@
             android:id="@+id/radioGroupBody"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginTop="8dp"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvBodyLabel" >
+            app:layout_constraintTop_toBottomOf="@id/tvBodyLabel">
 
             <RadioButton
                 android:id="@+id/radioText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="text"
-                android:checked="true"
+                android:layout_weight="1"
                 android:buttonTint="@color/chip_selected_bg"
-                android:layout_weight="1" />
+                android:checked="true"
+                android:text="TextCollect"
+                android:textColor="@color/md_theme" />
 
             <RadioButton
                 android:id="@+id/radioFile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="file"
-                android:checked="true"
+                android:layout_weight="1"
                 android:buttonTint="@color/chip_selected_bg"
-                android:layout_weight="1" />
+                android:text="File"
+                android:textColor="@color/md_theme" />
 
             <RadioButton
                 android:id="@+id/radioForm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="form"
-                android:checked="true"
+                android:layout_weight="1"
                 android:buttonTint="@color/chip_selected_bg"
-                android:layout_weight="1" />
+                android:text="Form"
+                android:textColor="@color/md_theme" />
 
             <RadioButton
                 android:id="@+id/radioNone"
@@ -160,10 +164,13 @@
             android:id="@+id/etJsonBody"
             android:layout_width="0dp"
             android:layout_height="150dp"
-            android:hint=""
-            android:gravity="top|start"
-            android:padding="8dp"
             android:layout_marginTop="8dp"
+            android:gravity="top|start"
+            android:hint="Enter"
+            android:padding="8dp"
+            android:background="@android:color/black"
+
+            android:textColor="@color/md_theme"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/radioGroupBody" />
@@ -173,15 +180,13 @@
             style="@style/Widget.MaterialComponents.Button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="send"
-            android:backgroundTint="@color/chip_selected_bg"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
+            android:backgroundTint="@color/chip_selected_bg"
+            android:text="Send"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/etJsonBody"
-            app:layout_constraintBottom_toBottomOf="parent" />
-
+            app:layout_constraintTop_toBottomOf="@id/etJsonBody" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </ScrollView>
