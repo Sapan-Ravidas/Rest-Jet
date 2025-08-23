@@ -47,7 +47,7 @@ class ResponseViewModel @Inject constructor() : ViewModel() {
         _error.value = null
     }
 
-    fun updateError(errorMessage: String) {
+    fun updateError(errorMessage: String?) {
         _error.value = errorMessage
         _responseCode.value = null
         _responseTime.value = null

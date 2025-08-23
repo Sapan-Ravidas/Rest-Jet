@@ -12,11 +12,13 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.ResponseBody
 import retrofit2.Response
 import java.io.File
+import java.net.URLEncoder
 import javax.inject.Inject
 
 @HiltViewModel
@@ -80,7 +82,7 @@ class RequestViewModel @Inject constructor(): ViewModel() {
         bodyType: String,
         bodyContent: String,
         file: File?= null,
-        onResponse: (responseCode: Int, responseTime: Long, responseBody: String?, responseHeaders: Map<String, String>) -> Unit
+        onResponse: (responseCode: Int, responseTime: Long, responseBody: String?, responseHeaders: Map<String, List<String>>) -> Unit
     ) {
         _isLoading.value = true
         _error.value = null
@@ -102,9 +104,21 @@ class RequestViewModel @Inject constructor(): ViewModel() {
 
                 val responseTime = System.currentTimeMillis() - startTime
                 val responseBody = response.body()?.string()
+                val responseHeaders = mutableMapOf<String, List<String>>()
+                response.headers().forEach {
+                    val key = it.first
+                    val value = it.second
+                    if (responseHeaders.contains(key)) {
+                        responseHeaders[key] = responseHeaders[key]!! + value
+                    } else {
+                        responseHeaders[key] = listOf(value)
+                    }
+                }
+                onResponse(response.code(), responseTime, responseBody, responseHeaders)
 
             } catch (e: Exception) {
-                _error.value = e.message ?: "unknown error occured"
+                _error.value = e.message ?: "unknown error occurred"
+                onResponse(-1, 0, "error: ${e.message}", emptyMap())
             } finally {
                 _isLoading.value = false
             }
@@ -112,23 +126,28 @@ class RequestViewModel @Inject constructor(): ViewModel() {
     }
 
     /**
-     *
+     * build URL with query params
      */
     private fun buildUrlWithQueryParams(baseUrl: String, params: Map<String, String>): String {
         if (params.isEmpty()) return baseUrl
 
         val urlBuilder = StringBuilder(baseUrl)
-        if (!baseUrl.contains("?")) {
+        val hasExistingParams = baseUrl.contains("?")
+
+        if (!hasExistingParams) {
             urlBuilder.append("?")
-        } else if (!urlBuilder.endsWith("?")) {
-            urlBuilder.append("?")
+        } else if (!urlBuilder.endsWith("?") && !urlBuilder.endsWith("&")) {
+            urlBuilder.append("&")
         }
 
         params.forEach { (key, value) ->
-            urlBuilder.append("$key=$value")
+            if (urlBuilder.isEmpty() && !urlBuilder.endsWith("?") && !urlBuilder.endsWith("&")) {
+                urlBuilder.append("&")
+            }
+            urlBuilder.append("$key=${URLEncoder.encode(value, "UTF-8")}")
         }
 
-        return urlBuilder.toString().removeSuffix("&")
+        return urlBuilder.toString()
     }
 
     /**
@@ -143,27 +162,24 @@ class RequestViewModel @Inject constructor(): ViewModel() {
         file: File?
     ) = when (bodyType) {
         "TEXT" -> {
-            val requestBody = bodyContent.toRequestBody("application/json".toMediaTypeOrNull())
+            val requestBody = getRequestBody(bodyContent)
             netWorkService.apiService.post(url, headers, requestBody)
         }
         "FILE" -> {
-            val part = MultipartBody.Part.createFormData(
-                "file",
-                file?.name,
-                file?.asRequestBody("multipart/form-data".toMediaTypeOrNull())!!
-            )
+            val part = getFileParts(file)
             netWorkService.apiService.uploadFile(url, headers, part)
         }
         "FORM" -> {
-            val fields = bodyContent.split("&").associate {
-                val parts = it.split("=")
-                parts[0] to parts.getOrElse(1) { "" }
-            }
+            val fields: Map<String, String> = getFormFields(bodyContent)
             netWorkService.apiService.postForm(url, headers, fields)
         }
-        else -> throw  IllegalArgumentException("unsupported body part")
+        "NONE" -> netWorkService.apiService.post(url, headers, null)
+        else -> throw  IllegalArgumentException("unsupported body part: $bodyType")
     }
 
+    /**
+     *
+     */
     private suspend fun handlePutRequest(
         netWorkService: NetWorkService,
         url: String,
@@ -173,24 +189,18 @@ class RequestViewModel @Inject constructor(): ViewModel() {
         file: File?
     ) = when (bodyType) {
         "TEXT" -> {
-            val requestBody = bodyContent.toRequestBody("application/json".toMediaTypeOrNull())
+            val requestBody = getRequestBody(bodyContent)
             netWorkService.apiService.put(url, headers, requestBody)
         }
         "FILE" -> {
-            val part = MultipartBody.Part.createFormData(
-                "file",
-                file?.name,
-                file?.asRequestBody("multipart/form-data".toMediaTypeOrNull())!!
-            )
+            val part = getFileParts(file)
             netWorkService.apiService.uploadFile(url, headers, part)
         }
         "FORM" -> {
-            val fields = bodyContent.split("&").associate {
-                val parts = it.split("=")
-                parts[0] to parts.getOrElse(1) { "" }
-            }
+            val fields = getFormFields(bodyContent)
             netWorkService.apiService.postForm(url, headers, fields)
         }
+        "NONE" -> netWorkService.apiService.put(url, headers, null)
         else -> throw IllegalArgumentException("UnSupported body type")
     }
 
@@ -206,25 +216,50 @@ class RequestViewModel @Inject constructor(): ViewModel() {
         file: File?
     ) = when (bodyType) {
         "TEXT" -> {
-            val requestBody = bodyContent.toRequestBody("application/json".toMediaTypeOrNull())
+            val requestBody = getRequestBody(bodyContent)
             netWorkService.apiService.patch(url, headers, requestBody)
         }
         "FILE" -> {
-            val part = MultipartBody.Part.createFormData(
-                "file",
-                file?.name,
-                file?.asRequestBody("multipart/form-data".toMediaTypeOrNull())!!
-            )
+            val part = getFileParts(file)
             netWorkService.apiService.uploadFile(url, headers, part)
         }
         "FORM" -> {
-            val fields = bodyContent.split("&").associate {
-                val parts = it.split("=")
-                parts[0] to parts.getOrElse(1) { "" }
-            }
+            val fields = getFormFields(bodyContent)
             netWorkService.apiService.postForm(url, headers, fields)
         }
-        else -> throw IllegalArgumentException("Unsupported body type")
+        "NONE" -> netWorkService.apiService.patch(url, headers, null)
+        else -> throw IllegalArgumentException("Unsupported body type $bodyType")
+    }
+
+    /**
+     *
+     */
+    private fun getFileParts(file: File?): MultipartBody.Part {
+        if (file == null || !file.exists()) {
+            throw IllegalArgumentException("File not selected or doesn't exist")
+        }
+        return MultipartBody.Part.createFormData(
+            "file",
+            file.name,
+            file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+        )
+    }
+
+    /**
+     *
+     */
+    private fun getRequestBody(bodyContent: String): RequestBody =
+        bodyContent.toRequestBody("application/json".toMediaTypeOrNull())
+
+    /**
+     *
+     */
+    private fun getFormFields(bodyContent: String): Map<String, String> =
+        bodyContent.split("&").associate {
+            val parts = it.split("=")
+            val key = parts[0]
+            val value = if (parts.size > 1) parts[1] else ""
+            key to value
     }
 
 }

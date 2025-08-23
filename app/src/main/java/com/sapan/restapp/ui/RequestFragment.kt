@@ -3,6 +3,7 @@ package com.sapan.restapp.ui
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +25,7 @@ import java.io.File
 
 @AndroidEntryPoint
 class RequestFragment: Fragment() {
+    private val TAG = "RequestFragment"
     private var _binding: FragmentRequestBinding? = null
     private val binding get() = _binding!!
     private val requestViewModel: RequestViewModel by viewModels()
@@ -160,15 +162,15 @@ class RequestFragment: Fragment() {
             bodyContent = bodyContent,
             file = selectedFile
         ) { responseCode, responseTime, responseBody, responseHeaders ->
-            // Convert Map<String, String> to Map<String, List<String>>
-            val headersAsList = responseHeaders.mapValues { listOf(it.value) }
 
             responseViewModel.updateResponse(
                 responseCode,
                 responseTime,
                 responseBody,
-                headersAsList
+                responseHeaders
             )
+
+            Log.d(TAG, "response viewModel hashCode=${responseViewModel.hashCode()}")
 
             // Switch to response tab using activity's viewpager
             (requireActivity() as? MainActivity)?.binding?.viewpager?.setCurrentItem(1, true)

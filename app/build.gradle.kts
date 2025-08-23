@@ -44,6 +44,7 @@ android {
 
 dependencies {
     // Android Core
+    implementation(libs.androidx.constraintlayout.v221)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
