@@ -33,4 +33,6 @@
     <color name="chip_unselected_text">#333333</color>
     <color name="chip_selected_stroke">#4CAF50</color>
     <color name="chip_unselected_stroke">#CCCCCC</color>
+
+    <color name="purple_500">#9C27B0</color>
 </resources>

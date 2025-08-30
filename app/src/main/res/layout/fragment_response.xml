@@ -37,6 +37,7 @@
                 android:contentDescription="Toggle status visibility" />
         </LinearLayout>
 
+        <!-- status section -->
         <LinearLayout
             android:id="@+id/llStatusContent"
             android:layout_width="0dp"
@@ -161,16 +162,31 @@
                 android:contentDescription="Toggle body visibility" />
         </LinearLayout>
 
+        <!-- JSON Recyclerview for expandable JSON -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvJsonBody"
+            android:layout_width="0dp"
+            android:layout_height="600dp"
+            android:background="@drawable/border_outline"
+            android:padding="8dp"
+            android:visibility="gone"
+            tools:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/llBodyHeader" />
+
         <ScrollView
             android:id="@+id/svBodyContent"
             android:layout_width="0dp"
-            android:layout_height="200dp"
+            android:layout_height="600dp"
             android:background="@drawable/border_outline"
             android:padding="8dp"
-            android:visibility="visible"
+            android:visibility="gone"
+            tools:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/llBodyHeader">
+            app:layout_constraintTop_toBottomOf="@id/llBodyHeader"
+            >
 
             <TextView
                 android:id="@+id/tvResponseBody"
@@ -178,7 +194,9 @@
                 android:layout_height="wrap_content"
                 android:text="No response body"
                 android:textColor="@android:color/black" />
+
         </ScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </ScrollView>

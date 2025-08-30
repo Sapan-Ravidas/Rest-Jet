@@ -37,12 +37,13 @@ class MainActivity : AppCompatActivity() {
 
         TabLayoutMediator(binding.tabLayout, binding.viewpager) { tab, position ->
             tab.text = when (position) {
-                0 -> "Request"
-                1 -> "Response"
+                0 -> "Collections"
+                1 -> "Request"
+                2 -> "Response"
                 else -> ""
             }
         }.attach()
 
-        binding.viewpager.setCurrentItem(0, false)
+        binding.viewpager.setCurrentItem(1, false)
     }
 }

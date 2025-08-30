@@ -12,6 +12,7 @@ class ResponseViewModel @Inject constructor() : ViewModel() {
     private val _responseCode = MutableLiveData<Int>().apply {
         value = null
     }
+
     val responseCode: LiveData<Int?> = _responseCode
 
     private val _responseTime = MutableLiveData<Long>().apply {

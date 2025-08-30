@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -29,7 +30,7 @@ class RequestFragment: Fragment() {
     private var _binding: FragmentRequestBinding? = null
     private val binding get() = _binding!!
     private val requestViewModel: RequestViewModel by viewModels()
-    private val responseViewModel: ResponseViewModel by viewModels()
+    private val responseViewModel: ResponseViewModel by activityViewModels()
 
     private var selectedFile: File? = null
 
@@ -173,7 +174,7 @@ class RequestFragment: Fragment() {
             Log.d(TAG, "response viewModel hashCode=${responseViewModel.hashCode()}")
 
             // Switch to response tab using activity's viewpager
-            (requireActivity() as? MainActivity)?.binding?.viewpager?.setCurrentItem(1, true)
+            (requireActivity() as? MainActivity)?.binding?.viewpager?.setCurrentItem(2, true)
         }
     }
 
